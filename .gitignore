@@ -3,3 +3,17 @@
 GV324/
 Gv330/
 有用小代码/
+
+*.aux
+*.bbl
+*.bcf
+*.fdb_latexmk
+*.fls
+*.log
+*.nav
+*.out
+*.run.xml
+*.snm
+*.blg
+*.toc
+*.xdv
