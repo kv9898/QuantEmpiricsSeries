@@ -1,4 +1,4 @@
-#setup
+# setup ####
 rm(list = ls()) # clear workspace
 
 need <- c("modelsummary","tidyverse","rstudioapi","readstata13", "ggplot2") # list packages needed
@@ -9,14 +9,13 @@ invisible(lapply(need, library, character.only=T)) # load needed packages
 setwd(dirname(rstudioapi::getSourceEditorContext()$path)) #set working directory to the file directory
 list.files()
 
-#read data
+# read data ####
 data<-read.dta13("bsa2017.dta")
 
-#Let's make a simple table
+# Let's make a simple table ####
 with(data, table(Country)) #within the dataframe "data", tabulate the variable "Country"
 
 with(data, table(EURefb)) #within the dataframe "data", tabulate the variable "EURefb"
-
 
 #Recode the variable EURefb into three categories
 #First, let's create an empty object
