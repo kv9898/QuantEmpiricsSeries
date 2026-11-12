@@ -4,10 +4,10 @@ library(modelsummary)
 # Data simulation ----
 set.seed(123)
 
-# Balanced panel: 500 units observed before and after treatment.
-# All treated units start treatment in the same period.
+# Balanced panel: 500 units observed in eight periods (-3 through 4).
+# All treated units start treatment at time 0.
 n_units <- 500
-tau <- 2 # True treatment effect
+periods <- -3:4
 beta_x <- 1 # True effect of the control variable
 
 units <- data.frame(
@@ -16,12 +16,15 @@ units <- data.frame(
     unit_fe = rnorm(n_units, mean = 0, sd = 1)
 )
 
-dat <- expand.grid(id = units$id, post = 0:1)
+dat <- expand.grid(id = units$id, time = periods)
 dat <- merge(dat, units, by = "id", sort = TRUE)
-dat <- dat[order(dat$id, dat$post), ]
+dat <- dat[order(dat$id, dat$time), ]
 rownames(dat) <- NULL
 
+dat$post <- as.integer(dat$time >= 0)
 dat$did <- dat$treated * dat$post
+# No anticipation; effects increase from 1 at time 0 to 3 at time 4.
+dat$tau <- ifelse(dat$post == 1, 1 + 0.5 * dat$time, 0)
 
 # Exogenous control: varies within units over time and is independent of
 # treatment, unit effects, and outcome shocks.
@@ -33,7 +36,7 @@ dat$y <- 5 +
     dat$unit_fe +
     1.5 * dat$treated +
     0.75 * dat$post +
-    tau * dat$did +
+    dat$tau * dat$treated +
     beta_x * dat$x +
     rnorm(nrow(dat), mean = 0, sd = 1)
 
