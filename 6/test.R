@@ -67,8 +67,7 @@ control_comparison <- data.frame(
         unname(se(m, vcov = "iid")["x"])
     }),
     se_x_clustered_unadjusted = sapply(models, function(m) {
-        unname(se(m, vcov = ~id,
-                  ssc = ssc(K.adj = FALSE, G.adj = FALSE))["x"])
+        unname(se(m, vcov = ~id, ssc = ssc(K.adj = FALSE, G.adj = FALSE))["x"])
     }),
     row.names = NULL
 )
